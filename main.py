@@ -43,7 +43,8 @@ WHITE = (255, 255, 255)
 
 BLACK = (0, 0, 0)
 
-COLORS = [BLUE, GREEN, YELLOW, PURPLE, ORANGE, PINK, RED, WHITE]
+#COLORS = [BLUE, GREEN, YELLOW, PURPLE, ORANGE, PINK, RED, WHITE]
+COLORS = [BLUE, GREEN, RED, BLACK, BLACK, BLACK]
 
 FILES = {
     BLUE: "sound/sv-SE/blue.wav",
@@ -57,6 +58,7 @@ FILES = {
 }
 
 CORRECT_ANSWER = BLUE
+CORRECT_OLD = BLUE
 
 BUTTON1 = 5
 BUTTON2 = 11
@@ -105,9 +107,13 @@ async def play_sound_beep():
 
 
 async def roll_colors():
-    global CORRECT_ANSWER
+    global CORRECT_ANSWER, CORRECT_OLD
     random.shuffle(COLORS)
-    CORRECT_ANSWER = COLORS[random.randint(0, plasma.get_light_count() - 1)]
+    while True:
+        CORRECT_ANSWER = COLORS[random.randint(0, plasma.get_light_count() - 1)]
+        if (CORRECT_ANSWER is not BLACK and CORRECT_ANSWER is not CORRECT_OLD):
+            CORRECT_OLD = CORRECT_ANSWER
+            break
 
 
 async def output_lights():
